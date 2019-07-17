@@ -1,0 +1,6 @@
+[Dd]ebug/
+[Rr]elease/
+[Rr]eleases/
+logging/
+*.pro.user
+*.pro.*
