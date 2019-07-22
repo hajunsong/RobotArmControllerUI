@@ -16,6 +16,7 @@ public:
     ~Logger();
     void setShowDateTime(bool value);
     QFile *file;
+    bool loggerStart;
 
 private:
     QPlainTextEdit *m_editor;

@@ -7,20 +7,22 @@
 #include <QTimer>
 #include <QDoubleSpinBox>
 #include <QtMath>
+#include <QCheckBox>
+#include <QLabel>
 
 #include "Logger/logger.h"
 #include "TcpSocket/tcpclient.h"
 
 struct ServerToClient{
-    unsigned long long step, ik_step;
+    unsigned long long step, ik_step, dxl_step;
     double curJoint[6], curCart[6];
     double t;
 };
 
-enum{moveReady=0, moveJoint, moveCart, moveRect};
+enum{moveStart = 0, moveReady, moveJoint, moveCart, moveRect, moveStop};
 struct ClientToServer{
     double desCart[6], desJoint[6];
-    uint mode; // 1 : joint, 2 : Cartesian, 3 : Rect
+    uint mode; // 0 : Start, 1 : Ready, 2 : joint, 3 : Cartesian, 4 : Rect
 };
 
 namespace Ui {
@@ -41,12 +43,14 @@ public slots:
     void btnConnectClicked();
     void onConnectServer();
     void readMessage();
-    void timeout();
     void btnRunClicked();
     void btnReadyClicked();
     void cbCModeChanged(int arg);
     void cbJModeChanged(int arg);
     void cbRModeChanged(int arg);
+    void btnInitClicked();
+    void btnDeinitClicked();
+    void btnStartClicked();
 
 private:
     Ui::MainWindow *ui;
@@ -57,9 +61,10 @@ private:
     ServerToClient mServerToClient;
     ClientToServer mClientToServer;
     QVector<QDoubleSpinBox*> curJoint, curCart, desJoint, desCart;
-    QTimer *timer;
     bool CMode, JMode, RMode;
     bool connectState;
+    QVector<QCheckBox*> cbTorque;
+    QVector<QLabel*> txtPosition;
 };
 
 const double DEG2RAD = M_PI/180.0;

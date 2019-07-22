@@ -28,6 +28,7 @@ void Logger::setShowDateTime(bool value) {
 }
 
 Logger::~Logger() {
-    if (file != nullptr)
+    if (file != nullptr){
         file->close();
+    }
 }
